@@ -1,0 +1,15 @@
+#!/bin/bash
+
+BOOTLOADER="boot/grub/stage2_eltorito"
+ISO_DIR="iso"
+ISO_NAME="dummy-os"
+KERNEL_ELF="kernel.elf"
+
+cd src &&
+make all &&
+cd .. &&
+cp "src/${KERNEL_ELF}" "${ISO_DIR}/boot/${KERNEL_ELF}"
+
+# sudo genisoimage -R -b "$BOOTLOADER" -no-emul-boot -boot-load-size 4 -A os -input-charset utf8 -boot-info-table -o "${ISO_NAME}.iso" "$ISO_DIR"
+
+sudo grub-mkrescue /usr/lib/grub/i386-pc -o "${ISO_NAME}.iso" "${ISO_DIR}"
